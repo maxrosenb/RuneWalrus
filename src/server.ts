@@ -1,10 +1,15 @@
 import Discord from 'discord.js'
 import ytdl from 'ytdl-core'
-import { createAudioPlayer, createAudioResource, joinVoiceChannel } from '@discordjs/voice'
+import {
+  NoSubscriberBehavior,
+  createAudioPlayer,
+  createAudioResource,
+  joinVoiceChannel,
+} from '@discordjs/voice'
 import { TOKEN } from './config'
 import { routeMessage } from './routeMessage'
 import { client } from './utils/client'
-
+import play from 'play-dl'
 // import { play } from './commands/play'
 
 if (!TOKEN) {
@@ -16,23 +21,27 @@ if (!TOKEN) {
 
 const loopRunescapeMusic = async () => {
   console.log('LOOPING RUNESCAPE MUSIC')
-  const guild: Discord.Guild = await client.guilds.fetch('910798175550451712')
+  const guild: Discord.Guild = await client.guilds.fetch('613483727229812752')
 
   const connection = joinVoiceChannel({
-    channelId: '910798176129277954',
+    channelId: '951646015734300712',
     guildId: guild.id,
     adapterCreator: guild.voiceAdapterCreator,
     selfDeaf: false,
   })
 
+  const stream = await play.stream('https://www.youtube.com/watch?v=_kim_qGTjZY')
+
+  const resource = createAudioResource(stream.stream, {
+    inputType: stream.type,
+    inlineVolume: true,
+  })
+
   const serverAudioPlayer = createAudioPlayer()
 
-  const output = ytdl('https://www.youtube.com/watch?v=_kim_qGTjZY', { filter: 'audioonly' })
+  resource.volume?.setVolume(0.2)
 
-  const youtubeSong = createAudioResource(output)
-  youtubeSong.volume?.setVolume(0.5)
-
-  serverAudioPlayer.play(youtubeSong)
+  serverAudioPlayer.play(resource)
   connection.subscribe(serverAudioPlayer)
 }
 
@@ -41,6 +50,7 @@ client.once('ready', async (): Promise<void> => {
   loopRunescapeMusic()
 
   setInterval(async () => {
+    console.log('interval loop called')
     loopRunescapeMusic()
   }, 7200000)
 })
