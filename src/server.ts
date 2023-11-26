@@ -15,6 +15,7 @@ if (!TOKEN) {
 }
 
 const loopRunescapeMusic = async () => {
+  console.log('LOOPING RUNESCAPE MUSIC')
   const guild: Discord.Guild = await client.guilds.fetch('910798175550451712')
 
   const connection = joinVoiceChannel({
@@ -25,15 +26,14 @@ const loopRunescapeMusic = async () => {
   })
 
   const serverAudioPlayer = createAudioPlayer()
-  console.log('GOT HERE 1')
+
   const output = ytdl('https://www.youtube.com/watch?v=_kim_qGTjZY', { filter: 'audioonly' })
-  console.log('GOT HERE 2')
+
   const youtubeSong = createAudioResource(output)
   youtubeSong.volume?.setVolume(0.5)
 
   serverAudioPlayer.play(youtubeSong)
   connection.subscribe(serverAudioPlayer)
-  console.log('GOT HERE 3')
 }
 
 client.once('ready', async (): Promise<void> => {

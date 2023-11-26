@@ -1,4 +1,4 @@
-import Discord from 'discord.js'
+import Discord, { TextChannel } from 'discord.js'
 import { createAudioResource, AudioPlayerStatus } from '@discordjs/voice'
 import ytdl from 'ytdl-core'
 import { ServerInfo, Song } from '../types'
@@ -55,6 +55,7 @@ export const playSongThroughVoiceAndLoopQueue = async ({
       // If the queue is not empty, play the next song.
       playSongThroughVoiceAndLoopQueue({ guild, song: songs[0] })
     })
+
     serverAudioPlayer.on('error', (error: any) => {
       console.error(
         `Discord Player Error: ${error?.message} with resource ${error?.resource?.metadata?.title}`
@@ -72,8 +73,8 @@ export const playSongThroughVoiceAndLoopQueue = async ({
       // If the queue is not empty, play the next song.
       playSongThroughVoiceAndLoopQueue({ guild, song: songs[0] })
     })
-
-    textChannel.send(`Now playing: **${song.title}**`)
+    // eslint-disable-next-line semi-style
+    ;(textChannel as TextChannel).send(`Now playing: **${song.title}**`)
     connection.subscribe(serverAudioPlayer)
   } catch (error) {
     console.log(error)

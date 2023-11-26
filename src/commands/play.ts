@@ -1,4 +1,4 @@
-import { createAudioPlayer, joinVoiceChannel } from '@discordjs/voice'
+import { DiscordGatewayAdapterCreator, createAudioPlayer, joinVoiceChannel } from '@discordjs/voice'
 import Discord from 'discord.js'
 import { ServerInfo, Song } from '../types'
 import { getSongObjectFromUserInput } from '../utils/getSongObjectFromUserInput'
@@ -48,7 +48,7 @@ export const play = async ({
         connection: joinVoiceChannel({
           channelId: member.voice.channel.id,
           guildId: guild.id,
-          adapterCreator: guild.voiceAdapterCreator,
+          adapterCreator: guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
           selfDeaf: false,
         }),
         songs: [song],

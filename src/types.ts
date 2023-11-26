@@ -8,13 +8,8 @@ export type Song = {
 }
 
 export type ServerInfo = {
-  textChannel:
-    | Discord.DMChannel
-    | Discord.PartialDMChannel
-    | Discord.NewsChannel
-    | Discord.TextChannel
-    | Discord.ThreadChannel
-    | Discord.VoiceChannel
+  textChannel: any
+
   connection: VoiceConnection | null
   songs: Song[]
   isPaused: boolean
